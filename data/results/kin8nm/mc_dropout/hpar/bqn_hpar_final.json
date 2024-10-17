@@ -1,0 +1,1 @@
+{"HPARS": {"n_batch": 16, "actv": "softplus", "lr_adam": 5e-4, "layers": [512, 512, 256, 128], "p_degree": 8, "p_dropout": 0.05}}

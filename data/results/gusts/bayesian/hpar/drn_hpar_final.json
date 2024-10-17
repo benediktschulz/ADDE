@@ -1,0 +1,1 @@
+{"HPARS": {"n_batch": 32, "actv": "softplus", "lr_adam": 5e-4, "layers": [64, 64, 32], "prior": "laplace"}}

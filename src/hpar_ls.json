@@ -1,0 +1,1 @@
+{"n_batch": [16, 32, 64, 256], "actv": ["softplus", "relu"], "lr_adam": [-1, 5e-4], "layers": [[64, 32], [512, 256], [64, 64, 32], [512, 512, 256], [512, 512, 256, 128]], "p_dropout": [0.05, 0.1, 0.2, 0.5, 0.8], "prior": ["uniform", "standard_normal", "laplace"], "p_degree": [8, 12], "N_bins": [20, 30]}

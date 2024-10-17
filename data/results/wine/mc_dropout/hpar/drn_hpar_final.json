@@ -1,0 +1,1 @@
+{"HPARS": {"n_batch": 32, "actv": "relu", "lr_adam": -1, "layers": [512, 256], "p_dropout": 0.05}}
