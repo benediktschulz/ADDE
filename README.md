@@ -2,7 +2,7 @@
 
 This repository provides code and descriptions accompanying the paper
 
-> Schulz, B. and Lerch, S. (2024). 
+> Schulz, B., Köhler, L. and Lerch, S. (2024). 
 > Aggregating distribution forecasts from deep ensembles.
 > Preprint available at TODO.
 
@@ -67,11 +67,12 @@ Next to setting up the environment, one has to adapt the paths in the configurat
 The entire data comprises around 1.2 TB and is therefore too large to be stored in this repository. However, this repository still contains subsets of the entire data from the study in the `data`-directory, which is structured as required by the code. Note that Scenario 2 from the manuscript is referred to as `scen_4` in the code and data for historical reasons.
 
 **Included:** 
-- The input data files the deep ensemble forecasts are generated with
+- The input data files for the Wind data (from Schulz and Lerch, 2024; [DOI](https://dx.doi.org/10.35097/afEBrMYqNrxxvrLX)) and simulated data (as proposed in Li et al., 2021; [DOI](https://doi.org/10.1016/j.csda.2021.107203)).
 - Configuration files of the chosen hyperparameter values
 - Evaluation data
 
 **Not included:**
+- The input data files for the UCI data sets (The input data for the UCI data sets can be obtained from the Github-Repository https://github.com/yaringal/DropoutUncertaintyExps/ from the corresponding `data`-subdirectories)
 - Deep ensemble forecasts
 - Aggregated forecasts
 - Hyperparameter tuning runs
@@ -84,7 +85,7 @@ The repository further includes various evaluation plots for the analysis of the
 
 ## Note on the Generation of Forecasts for the Wind Data
 
-The NN methods for the Wind data set in Section 4.2 are not identical to that in Schulz and Lerch (2022; Monthly Weather Review) and the previous manuscript, as we modified the variants such that they are applied analogously to the other data sets. The modifications are listed in the following:
+The NN methods for the Wind data set in Section 4.2 are not identical to that in Schulz and Lerch (2022; [DOI](https://doi.org/10.1175/MWR-D-21-0150.1)) and the previous manuscript, as we modified the variants such that they are applied analogously to the other data sets. The modifications are listed in the following:
 
 - Here, we do not employ an embedding of the station IDs to reduce the complexity of the implementation.
 - We excluded the station-wise bias and ensemble coverage as predictor variables, as they are based on the choice of the training period. For each partition, the variables would take different values for the same sample. Hence, we did not include them.
