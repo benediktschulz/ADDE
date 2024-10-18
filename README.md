@@ -10,7 +10,7 @@ In particular, code for the implementation of the networks, aggregation methods,
 
 ## Summary
 
-We address the question of how to aggregate distribution forecasts based on ensembles of neural networks, referred to as `deep ensembles’. Using theoretical arguments and a comprehensive analysis on twelve benchmark data sets, we systematically compare probability- and quantile-based aggregation methods for three neural network-based approaches with different forecast distribution types as output. Our results show that combining forecast distributions from deep ensembles can substantially improve the predictive performance. We propose a general quantile aggregation framework for deep ensembles that allows for corrections of systematic deficiencies and performs well in a variety of settings, often superior compared to a linear combination of the forecast densities.
+We address the question of how to aggregate distribution forecasts based on ensembles of neural networks, referred to as _deep ensembles_. Using theoretical arguments and a comprehensive analysis on twelve benchmark data sets, we systematically compare probability- and quantile-based aggregation methods for three neural network-based approaches with different forecast distribution types as output. Our results show that combining forecast distributions from deep ensembles can substantially improve the predictive performance. We propose a general quantile aggregation framework for deep ensembles that allows for corrections of systematic deficiencies and performs well in a variety of settings, often superior compared to a linear combination of the forecast densities.
 
 ## Previous Version of Manuscript
 
@@ -67,7 +67,7 @@ Next to setting up the environment, one has to adapt the paths in the configurat
 The entire data comprises around 1.2 TB and is therefore too large to be stored in this repository. However, this repository still contains subsets of the entire data from the study in the `data`-directory, which is structured as required by the code. Note that Scenario 2 from the manuscript is referred to as `scen_4` in the code and data for historical reasons.
 
 **Included:** 
-- The input data files for the Wind data (from Schulz and Lerch, 2024; [DOI](https://dx.doi.org/10.35097/afEBrMYqNrxxvrLX)) and simulated data (as proposed in Li et al., 2021; [DOI](https://doi.org/10.1016/j.csda.2021.107203)).
+- The input data files for the Wind data (from Schulz and Lerch, 2024; [DOI](https://dx.doi.org/10.35097/afEBrMYqNrxxvrLX)) and simulated data (as proposed in Li et al., 2021; [DOI](https://doi.org/10.1016/j.csda.2021.107203))
 - Configuration files of the chosen hyperparameter values
 - Evaluation data
 
