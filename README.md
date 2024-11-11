@@ -4,7 +4,7 @@ This repository provides code and descriptions accompanying the paper
 
 > Schulz, B., Köhler, L. and Lerch, S. (2024). 
 > Aggregating distribution forecasts from deep ensembles.
-> Preprint available at [https://arxiv.org/abs/2204.02291].
+> Preprint available at https://arxiv.org/abs/2204.02291.
 
 In particular, code for the implementation of the networks, aggregation methods, ensembling strategies, case study and evaluation in addition to input and evaluation data of the case study is available.
 
