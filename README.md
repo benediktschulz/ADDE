@@ -38,6 +38,8 @@ The environment can be generated via the `environment.yml`-file. The source code
 | `config`| Configuration file. Note that you have to adapt the paths for use. |
 | `ss_1_ensemble` | Deep ensemble generation. |
 | `ss_2_aggregation` | Deep ensemble aggregation. |
+| `run_aggregation_times` | Run code for forecast aggregation with time keeping. |
+| `ss_5_aggregation_times` | Deep ensemble aggregation with aggregation time keeping. |
 | **_Forecast Evaluation_** | |
 | `run_eval` | Run code for forecast evaluation. |
 | `config_eval` | Configuration file. Note that you have to adapt the paths for use. |
@@ -46,6 +48,7 @@ The environment can be generated via the `environment.yml`-file. The source code
 | `figures` | Generation of evaluation figures (not in manuscript). |
 | `paper_figures_data` | Generation of data required for evaluation figures. |
 | `paper_figures_data.pkl` | Data required for evaluation figures. |
+| `paper_figures_data_aggregation_time.pkl` | Data required for evaluation figures of aggregation time analysis. |
 | `paper_figures_in_depth_analysis` | Generation of evaluation figures in Section 4.1 of the manuscript. |
 | `paper_figures_benchmark_study` | Generation of evaluation figures in Section 4.2 of the manuscript. |
 | `r_figures` | Generation of evaluation figures in Sections 2 and 3 of the manuscript (R-file). |
