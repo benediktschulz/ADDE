@@ -89,7 +89,7 @@ agg_lty <- c(
   "opt" = 4
 )
 
-#### Section 2: Example aggregation ####
+#### Section 2: Example aggregation (submission) ####
 # Line width for plotting
 lwd_plot <- 3
 
@@ -309,6 +309,248 @@ legend(x = "bottom",
 # End PDF
 dev.off()
 
+#### Section 2: Example aggregation (revision) ####
+# Line width for plotting
+lwd_plot <- 3
+
+# Sizes
+cex_main <- 1.3
+cex_lab <- 1.2
+cex_axis <- 1.2
+
+# Evaluations for plotting
+n_plot <- 1e+3
+
+# Aggregation methods to plot
+agg_meths_plot <- c("lp", "vi", "vi-a", "vi-w", "vi-aw")
+
+# Number of forecasts to aggregate
+n <- 2
+
+# Lower and upper boundaries
+l <- 0.5
+u <- 13.5
+
+# Parameters of individual distributions
+mu_1 <- 7
+mu_2 <- 10
+sd_1 <- 1
+sd_2 <- 1
+
+# Data frame of distributions
+df_plot <- data.frame(y = numeric(length = n_plot))
+
+# Add probabilities and densities
+for(temp in c("1", "2", agg_meths_plot)){
+  df_plot[[paste0("p_", temp)]] <- df_plot[[paste0("d_", temp)]] <- 
+    numeric(length = n_plot) }
+
+# Vector to plot on
+df_plot[["y"]] <- seq(from = l,
+                      to = u,
+                      length.out = n_plot)
+
+# Calculate probabilities and densities of individual forecasts
+for(temp in 1:2){
+  df_plot[[paste0("p_", temp)]] <- pnorm(q = df_plot[["y"]],
+                                         mean = get(paste0("mu_", temp)),
+                                         sd = get(paste0("sd_", temp)))
+  df_plot[[paste0("d_", temp)]] <- dnorm(x = df_plot[["y"]],
+                                         mean = get(paste0("mu_", temp)),
+                                         sd = get(paste0("sd_", temp)))
+}
+
+# LP
+df_plot[["p_lp"]] <- rowMeans(df_plot[,paste0("p_", 1:2)])
+df_plot[["d_lp"]] <- rowMeans(df_plot[,paste0("d_", 1:2)])
+
+# For-Loop over Vincentization approaches
+for(temp in agg_meths_plot[grepl("vi", agg_meths_plot, fixed = TRUE)]){
+  # Intercept
+  if(is.element(temp, c("vi", "vi-w"))){ a <- 0 }
+  else if(is.element(temp, c("vi-a", "vi-aw"))){ a <- -6 }
+  
+  # Weights
+  if(is.element(temp, c("vi", "vi-a"))){ w <- 1/n }
+  else if(is.element(temp, c("vi-w", "vi-aw"))){ w <- 1/n + 0.15 }
+  
+  # Calculate mean and standard deviation
+  mu_vi <- a + w*sum(c(mu_1, mu_2))
+  sd_vi <- w*sum(c(sd_1, sd_2))
+  
+  # Calculate probabilities and densities
+  df_plot[[paste0("p_", temp)]] <- pnorm(q = df_plot[["y"]],
+                                         mean = mu_vi,
+                                         sd = sd_vi)
+  df_plot[[paste0("d_", temp)]] <- dnorm(x = df_plot[["y"]],
+                                         mean = mu_vi,
+                                         sd = sd_vi)
+}
+
+# First plot: Only LP and VI with equal weights
+agg_meths_eq <- c("lp", "vi")
+agg_meths_vi <- c("vi", "vi-a", "vi-w", "vi-aw")
+df_plot0 <- df_plot
+
+# For-Loop over plots of two different figures
+for (i_plot in 1:2){
+  # Define plot specifics
+  if (i_plot == 1){
+    agg_meths_plot <- agg_meths_eq
+    df_plot <- df_plot0[,c("y", paste0("d_", c(1:n, agg_meths_plot)), paste0("p_", c(1:n, agg_meths_plot)))]
+    l_plot <- 3.5
+    u_plot <- u
+    file_pdf <- paste0(pdf_path, "/aggregation_methods_eq.pdf")
+  }
+  else if (i_plot == 2){
+    agg_meths_plot <- agg_meths_vi
+    df_plot <- df_plot0
+    l_plot <- l
+    u_plot <- u
+    file_pdf <- paste0(pdf_path, "/aggregation_methods_vi.pdf")
+  }
+  
+  # Start PDF
+  pdf(file = file_pdf,
+      height = 8,
+      width = 25,
+      pointsize = 28)
+  
+  # Set margins
+  par(mfrow = c(1, 3),
+      oma = c(4, 1, 0, 1),
+      mar = c(2, 2, 3, 1))
+  
+  ## PDF
+  # Empty plot
+  plot(
+    x = 0,
+    y = 0,
+    type = "n",
+    xlab = "y",
+    ylab = "f(y)",
+    main = "Probability density function (PDF)",
+    cex.axis = cex_axis,
+    cex.lab = cex_lab,
+    cex.main = cex_main,
+    ylim = c(0, max(df_plot[,grepl("d_", colnames(df_plot), fixed = TRUE)])),
+    xlim = c(l_plot, u_plot)
+  )
+  
+  # Draw individual PDFs
+  for(i in 1:n){
+    lines(x = df_plot[["y"]],
+          y = df_plot[[paste0("d_", i)]],
+          col = agg_col["ens"],
+          lty = 2,
+          cex = lwd_plot,
+          pch = lwd_plot,
+          lwd = lwd_plot) 
+  }
+  
+  # For-Loop over aggregation methods
+  for(temp in agg_meths_plot){
+    lines(x = df_plot[["y"]],
+          y = df_plot[[paste0("d_", temp)]],
+          col = agg_col[temp],
+          lty = 1,
+          lwd = lwd_plot)
+  }
+  
+  ## CDF
+  # Empty plot
+  plot(x = 0,
+       y = 0,
+       type = "n",
+       xlab = "y",
+       ylab = "F(y)",
+       main = "Cumulative distribution function (CDF)",
+       # main = "CDF",
+       cex.axis = cex_axis,
+       cex.lab = cex_lab,
+       cex.main = cex_main,
+       ylim = c(0, 1),
+       xlim = c(l_plot, u_plot))
+  
+  # Draw individual CDFs
+  for(i in 1:n){
+    lines(x = df_plot[["y"]],
+          y = df_plot[[paste0("p_", i)]],
+          col = agg_col["ens"],
+          lty = 2,
+          lwd = lwd_plot) 
+  }
+  
+  # For-Loop over aggregation methods
+  for(temp in agg_meths_plot){
+    lines(x = df_plot[["y"]],
+          y = df_plot[[paste0("p_", temp)]],
+          col = agg_col[temp],
+          lty = 1,
+          lwd = lwd_plot)
+  }
+  
+  ## Quantile functions
+  # Empty plot
+  plot(x = 0,
+       y = 0,
+       type = "n",
+       xlab = "p",
+       ylab = "Q(p)",
+       main = "Quantile function",
+       cex.axis = cex_axis,
+       cex.lab = cex_lab,
+       cex.main = cex_main,
+       xlim = c(0, 1),
+       ylim = c(l_plot, u_plot))
+  
+  # Draw individual quantile functions
+  for(i in 1:n){
+    lines(y = df_plot[["y"]],
+          x = df_plot[[paste0("p_", i)]],
+          col = agg_col["ens"],
+          lty = 2,
+          lwd = lwd_plot) 
+  }
+  
+  # For-Loop over aggregation methods
+  for(temp in agg_meths_plot){
+    lines(y = df_plot[["y"]],
+          x = df_plot[[paste0("p_", temp)]],
+          col = agg_col[temp],
+          lty = 1,
+          lwd = lwd_plot)
+  }
+  
+  # Set margins
+  par(fig = c(0, 1, 0, 1),
+      oma = c(0, 0, 0, 0),
+      mar = c(0, 0, 0, 0),
+      new = TRUE)
+  
+  # Empty Plot
+  plot(x = 0,
+       y = 0,
+       type = 'l',
+       bty = 'n',
+       axes = FALSE)
+  
+  # Add Legend
+  legend(x = "bottom",
+         bty = "n",
+         horiz = TRUE,
+         inset = 0.01,
+         xpd = TRUE,
+         cex = 1.5,
+         legend = as.expression(parse(text = c("F[1]", "F[2]", agg_abr[agg_meths_plot]))),
+         col = c(rep(agg_col["ens"], 2), agg_col[agg_meths_plot]),
+         lty = c(rep(2, n), rep(1, length(agg_lty[agg_meths_plot]))),
+         lwd = lwd_plot + 2)
+  
+  # End PDF
+  dev.off()
+}
+
 #### Section 2: Aggregation of HEN ####
 # Line width for plotting
 lwd_plot <- 3
@@ -374,7 +616,7 @@ pdf(file = file_pdf,
     pointsize = 25)
 
 # Plot together in two plots
-par(mfrow = c(1, 3))
+par(mfrow = c(1, 3), mar = c(5, 6, 4, 2))
 
 ### PDF
 # Empty plot
